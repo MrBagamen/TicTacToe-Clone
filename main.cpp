@@ -7,7 +7,9 @@ template <class T>
 void checkError(T);
 bool mouseOver(int mx, int my, SDL_Rect r);
 int turn = 0;
-string checkWinrar(int* a);
+bool keyDown[317];
+bool ended = false;
+bool checkWinrar(int* a,int p);
 
 int main(int argc, char* argv[])
 {
@@ -16,6 +18,9 @@ int main(int argc, char* argv[])
 	checkError(win);
 	SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	checkError(ren);
+
+    //Fill keyPress array
+    memset(keyDown, false, 317);
 	
 	//Background
 	SDL_Surface *img = SDL_LoadBMP("res/bg.bmp");
@@ -72,9 +77,19 @@ int main(int argc, char* argv[])
 				case SDL_QUIT:
 					is_running = false;
 				break;
-				default:;
+				case SDL_KEYDOWN:
+                    keyDown[e.key.keysym.sym] = true;
+                break;
+                case SDL_KEYUP:
+                    keyDown[e.key.keysym.sym] = false;
+                break;
+                default:;
 			}
 		}
+        if(keyDown[SDLK_ESCAPE])
+        {
+            is_running = false;
+        }
 		SDL_RenderClear(ren);
 		
 		//Draw background
@@ -88,30 +103,29 @@ int main(int argc, char* argv[])
 			{
 				SDL_RenderCopy(ren, efTexture, nullptr, &efData);
 			}
-			if(mouseOver(e.motion.x, e.motion.y, efData))
-			{
-				SDL_RenderCopy(ren, moTexture, nullptr, &efData);
-				if(e.button.button == SDL_BUTTON_LEFT)
-				{
-					if(fArray[i] == 0)
-					{
-						if(turn == 0)
-						{
-							fArray[i] = 1;
-							turn = 1;
-						}
-						else if(turn == 1)
-						{
-							fArray[i] = 2;
-							turn = 0;
-						}
-					}
-					else
-					{
-						cout << "The winrar is: " << checkWinrar(fArray) << "\n";
-					}
-				}
-			}
+			if(!ended)
+            {
+                if(mouseOver(e.motion.x, e.motion.y, efData))
+			    {
+				    SDL_RenderCopy(ren, moTexture, nullptr, &efData);
+				    if(e.button.button == SDL_BUTTON_LEFT)
+				    {
+				    	if(fArray[i] == 0)
+					    {
+						    if(turn == 0)
+						    {
+						    	fArray[i] = 1;
+						    	turn = 1;
+						    }
+						    else if(turn == 1)
+						    {
+						    	fArray[i] = 2;
+						    	turn = 0;
+						    }
+					    }
+				    }
+			    }
+            }
 			if(fArray[i] == 1)
 			{
 				SDL_RenderCopy(ren, xTexture, nullptr, &efData);
@@ -125,48 +139,32 @@ int main(int argc, char* argv[])
 			{
 				efData.y += efData.h + 15;
 				efData.x = 0;
-			}			
+			}
 		}
 		efData.x = 0;
 		efData.y = 13;
-		/*for(int i = 0; i <= 9; i++) //for loop to shot shit ionno how to explain
-		{
-			efData.x += 15; //this is first fields starting position then i just shot it thru loop by using MATH
-			if(mouseOver(e.motion.x, e.motion.y, efData))
-			{
-				SDL_RenderCopy(ren, moTexture, nullptr, &efData);
-				if(e.type == SDL_MOUSEBUTTONDOWN)
-				{
-					if(e.button.button == SDL_BUTTON_LEFT)
-					{
-						if(turn == 0)
-						{
-							SDL_RenderCopy(ren, xTexture, nullptr, &efData);
-							turn = 1;
-						}
-						else if(turn == 1)
-						{
-							SDL_RenderCopy(ren, oTexture, nullptr, &efData);
-							turn = 0;
-						}
-					}
-				}
-			}
-			else
-			{
-				SDL_RenderCopy(ren, efTexture, nullptr, &efData);
-			}
-			efData.x += efData.w+3;
-			if(i == 3 || i == 6)
-			{
-				efData.y += efData.h + 15;
-				efData.x = 0;
-			}
+        //Check who won
+        if(!ended)
+        {
+            if(checkWinrar(fArray, 1))
+            {
+                cout << "Winrar is X\n";
+            }
+            else if(checkWinrar(fArray, 2))
+            {
+                cout << "Winrar is O\n";
+            }
 		}
-		efData.x = 0;
-		efData.y = 13;*/
-		
-		
+        else
+        {
+            if(keyDown[SDLK_r])
+            {
+                ended = false;
+                memset(fArray, 0, 9);
+                turn = 0;
+
+            }
+        }
 		SDL_RenderPresent(ren);
 		SDL_Delay(16);
 	}
@@ -184,9 +182,15 @@ void checkError(T a)
 	}
 }
 
-string checkWinrar(int* a)
+bool checkWinrar(int* a, int p)
 {
-	return "";
+    //1 = X, 2 = O
+    if(a[0] == p && a[1] == p && a[2] == p)
+    {
+        ended = true;
+        return true;
+    }
+    return false;
 }
 
 bool mouseOver(int mx, int my, SDL_Rect r)
