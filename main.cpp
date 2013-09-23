@@ -4,8 +4,7 @@
 using namespace std;
 
 //Function prototypes
-template <class T>
-void checkError(T);
+void checkError(bool);
 bool mouseOver(int mx, int my, SDL_Rect r);
 bool checkWinrar(int* a, int p);
 bool allEqual(int* a, int v);
@@ -248,10 +247,9 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-template <class T>
-void checkError(T a)
+void checkError(bool expr)
 {
-    if(a == nullptr)
+    if(!expr)
     {
         cout << SDL_GetError() << endl;
         exit(1);
