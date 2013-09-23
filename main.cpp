@@ -3,15 +3,41 @@
 
 using namespace std;
 
-//Function prototypes
-void checkError(bool);
-bool mouseOver(int mx, int my, SDL_Rect r);
-bool checkWinrar(int* a, int p);
+namespace {
 
-//Global variables
-int turn = 0;
-bool ended = false;
-bool menu = true;
+void checkError(bool expr)
+{
+    if(!expr)
+    {
+        cout << SDL_GetError() << endl;
+        exit(1);
+    }
+}
+
+bool checkWinrar(int* a, int p, bool& ended)
+{
+    //1 = X, 2 = O
+    if( ((a[0] == p) && (a[1] == p) && (a[2] == p)) ||
+            ((a[0] == p) && (a[4] == p) && (a[8] == p)) ||
+            ((a[0] == p) && (a[3] == p) && (a[6] == p)) ||
+            ((a[1] == p) && (a[4] == p) && (a[7] == p)) ||
+            ((a[2] == p) && (a[4] == p) && (a[6] == p)) ||
+            ((a[2] == p) && (a[5] == p) && (a[8] == p)) ||
+            ((a[3] == p) && (a[4] == p) && (a[5] == p)) ||
+            ((a[6] == p) && (a[7] == p) && (a[8] == p)))
+    {
+        ended = true;
+        return true;
+    }
+    return false;
+}
+
+bool mouseOver(int mx, int my, SDL_Rect r)
+{
+    return mx > r.x && mx < r.x+r.w && my > r.y && my < r.y+r.h;
+}
+
+}
 
 int main(int argc, char* argv[])
 {
@@ -22,7 +48,10 @@ int main(int argc, char* argv[])
     SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     checkError(ren);
     const Uint8* keyDown = SDL_GetKeyboardState(nullptr);
-
+    
+    int turn = 0;
+    bool ended = false;
+    bool menu = true;
 
     //Menu Background
     img = SDL_LoadBMP("res/Menubg.bmp");
@@ -190,11 +219,11 @@ int main(int argc, char* argv[])
             //Check who won
             if(!ended)
             {
-                if(checkWinrar(fArray, 1))
+                if(checkWinrar(fArray, 1, ended))
                 {
                     cout << "Winrar is X\n";
                 }
-                else if(checkWinrar(fArray, 2))
+                else if(checkWinrar(fArray, 2, ended))
                 {
                     cout << "Winrar is O\n";
                 }
@@ -243,36 +272,4 @@ int main(int argc, char* argv[])
 
     SDL_Quit();
     return 0;
-}
-
-void checkError(bool expr)
-{
-    if(!expr)
-    {
-        cout << SDL_GetError() << endl;
-        exit(1);
-    }
-}
-
-bool checkWinrar(int* a, int p)
-{
-    //1 = X, 2 = O
-    if( ((a[0] == p) && (a[1] == p) && (a[2] == p)) ||
-            ((a[0] == p) && (a[4] == p) && (a[8] == p)) ||
-            ((a[0] == p) && (a[3] == p) && (a[6] == p)) ||
-            ((a[1] == p) && (a[4] == p) && (a[7] == p)) ||
-            ((a[2] == p) && (a[4] == p) && (a[6] == p)) ||
-            ((a[2] == p) && (a[5] == p) && (a[8] == p)) ||
-            ((a[3] == p) && (a[4] == p) && (a[5] == p)) ||
-            ((a[6] == p) && (a[7] == p) && (a[8] == p)))
-    {
-        ended = true;
-        return true;
-    }
-    return false;
-}
-
-bool mouseOver(int mx, int my, SDL_Rect r)
-{
-    return mx > r.x && mx < r.x+r.w && my > r.y && my < r.y+r.h;
 }
