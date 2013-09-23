@@ -39,7 +39,7 @@ bool mouseOver(int mx, int my, SDL_Rect r)
 
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     SDL_Event e;
     SDL_Surface *img;

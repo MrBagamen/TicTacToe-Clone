@@ -57,7 +57,7 @@
 ##==========================================================================
 
 # The pre-processor and compiler options.
-MY_CFLAGS = -std=c++11
+MY_CFLAGS = -std=c++11 -pedantic -Wall -Wextra -Wshadow
 
 # The linker options.
 MY_LIBS   = -lSDL2
