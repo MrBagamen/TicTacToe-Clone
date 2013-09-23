@@ -7,8 +7,6 @@ using namespace std;
 void checkError(bool);
 bool mouseOver(int mx, int my, SDL_Rect r);
 bool checkWinrar(int* a, int p);
-bool allEqual(int* a, int v);
-bool allEqual(int *a, int v1, int v2);
 
 //Global variables
 int turn = 0;
@@ -272,18 +270,6 @@ bool checkWinrar(int* a, int p)
         return true;
     }
     return false;
-}
-
-bool allEqual(int* a, int v)
-{
-    for(int i = 0; i < 9; i++)
-    {
-        if(a[i] != v)
-        {
-            return false;
-        }
-    }
-    return true;
 }
 
 bool mouseOver(int mx, int my, SDL_Rect r)
