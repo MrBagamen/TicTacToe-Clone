@@ -290,9 +290,5 @@ bool allEqual(int* a, int v)
 
 bool mouseOver(int mx, int my, SDL_Rect r)
 {
-    if(mx > r.x && mx < r.x+r.w && my > r.y && my < r.y+r.h)
-    {
-        return true;
-    }
-    return false;
+    return mx > r.x && mx < r.x+r.w && my > r.y && my < r.y+r.h;
 }
