@@ -33,9 +33,9 @@ bool checkWinrar(int *a, int p, bool &ended)
     return false;
 }
 
-bool mouseOver(int mx, int my, SDL_Rect r)
+bool pointIsInRect(SDL_Point p, SDL_Rect r)
 {
-    return mx > r.x && mx < r.x + r.w && my > r.y && my < r.y + r.h;
+    return p.x > r.x && p.x < r.x + r.w && p.y > r.y && p.y < r.y + r.h;
 }
 
 }
@@ -179,7 +179,7 @@ int main()
                 }
                 if (!ended)
                 {
-                    if (mouseOver(event.motion.x, event.motion.y, efData))
+                    if (pointIsInRect({event.motion.x, event.motion.y}, efData))
                     {
                         SDL_RenderCopy(ren, moTexture, nullptr, &efData);
                         if (event.button.button == SDL_BUTTON_LEFT)
@@ -247,7 +247,7 @@ int main()
             //Exit button
             SDL_RenderCopy(ren, ebTexture, nullptr, &ebData);
 
-            if (mouseOver(event.motion.x, event.motion.y, pbData))
+            if (pointIsInRect({event.motion.x, event.motion.y}, pbData))
             {
                 SDL_RenderCopy(ren, selTexture, nullptr, &selData);
                 if (event.button.button == SDL_BUTTON_LEFT)
@@ -255,7 +255,7 @@ int main()
                     menu = false;
                 }
             }
-            if (mouseOver(event.motion.x, event.motion.y, ebData))
+            if (pointIsInRect({event.motion.x, event.motion.y}, ebData))
             {
                 selData.y += 100;
                 SDL_RenderCopy(ren, selTexture, nullptr, &selData);
