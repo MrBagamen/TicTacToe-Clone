@@ -43,7 +43,7 @@ int main()
 {
     SDL_Event e;
     SDL_Surface *img;
-    SDL_Window *win = SDL_CreateWindow("TicTacToe - Press R to restart.", 100, 100, 320, 400, SDL_WINDOW_SHOWN);
+    SDL_Window *win = SDL_CreateWindow("TicTacToe - Press R to restart.", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 320, 400, SDL_WINDOW_SHOWN);
     checkError(win);
     SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     checkError(ren);
