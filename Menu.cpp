@@ -47,7 +47,7 @@ void Menu::onEvent(const SDL_Event &event)
         }
         if (pointIsInRect({event.button.x, event.button.y}, spr_exitButton.getRect()))
         {
-            // TODO: quit
+            driver::running = false;
         }
     }
     else if (event.type == SDL_MOUSEMOTION)
