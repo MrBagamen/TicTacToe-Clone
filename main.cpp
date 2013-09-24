@@ -1,6 +1,8 @@
 #include "Sprite.hpp"
 
 #include <iostream>
+#include <string>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -41,6 +43,14 @@ bool pointIsInRect(SDL_Point p, SDL_Rect r)
     return p.x > r.x && p.x < r.x + r.w && p.y > r.y && p.y < r.y + r.h;
 }
 
+// Load a texture assertively
+SDL_Texture* loadTexture(SDL_Renderer* renderer, const string& filename)
+{
+    auto tex = IMG_LoadTexture(renderer, filename.c_str());
+    tictac_assert(tex, IMG_GetError());
+    return tex;
+}
+
 }
 
 int main()
@@ -56,50 +66,21 @@ int main()
     bool ended = false;
     bool menu = true;
 
-    //Menu Background
-    SDL_Texture *mbgTexture = IMG_LoadTexture(ren, "res/Menubg.bmp");
-    Sprite mbgSprite(mbgTexture);
-    tictac_assert(mbgTexture, IMG_GetError());
+    Sprite mbgSprite(loadTexture(ren, "res/Menubg.bmp"));
+    Sprite pbSprite(loadTexture(ren, "res/pb.bmp"), 75, 100);
+    Sprite selSprite(loadTexture(ren, "res/selection.bmp"), 65, 100);
+    Sprite ebSprite(loadTexture(ren, "res/eb.bmp"), 75, 200);
+    Sprite bgSprite(loadTexture(ren, "res/bg.bmp"), 0, 3);
 
-    //Play Button
-    SDL_Texture *pbTexture = IMG_LoadTexture(ren, "res/pb.bmp");
-    Sprite pbSprite(pbTexture, 75, 100);
-    tictac_assert(pbTexture, IMG_GetError());
-
-    //Selection arrow
-    SDL_Texture *selTexture = IMG_LoadTexture(ren, "res/selection.bmp");
-    tictac_assert(selTexture, IMG_GetError());
-    Sprite selSprite(selTexture, 65, 100);
-
-    //Exit
-    SDL_Texture *ebTexture = IMG_LoadTexture(ren, "res/eb.bmp");
-    tictac_assert(ebTexture, IMG_GetError());
-    Sprite ebSprite(ebTexture, 75, 200);
-
-    //Background
-    SDL_Texture *bgTexture = IMG_LoadTexture(ren, "res/bg.bmp");
-    tictac_assert(bgTexture, IMG_GetError());
-    Sprite bgSprite(bgTexture, 0, 3);
-
-    //Empty Field
+    SDL_Texture *efTexture = loadTexture(ren, "res/empty.bmp");
     SDL_Rect efData;
-    SDL_Texture *efTexture = IMG_LoadTexture(ren, "res/empty.bmp");
-    tictac_assert(efTexture, IMG_GetError());
     SDL_QueryTexture(efTexture, nullptr, nullptr, &efData.w, &efData.h);
     efData.x = 0;
     efData.y = 13;
 
-    //Mouseover Field
-    SDL_Texture *moTexture = IMG_LoadTexture(ren, "res/collision.bmp");
-    tictac_assert(moTexture, IMG_GetError());
-
-    //X Field
-    SDL_Texture *xTexture = IMG_LoadTexture(ren, "res/x.bmp");
-    tictac_assert(xTexture, IMG_GetError());
-
-    //O Field
-    SDL_Texture *oTexture = IMG_LoadTexture(ren, "res/o.bmp");
-    tictac_assert(oTexture, IMG_GetError());
+    SDL_Texture *moTexture = loadTexture(ren, "res/collision.bmp");
+    SDL_Texture *xTexture = loadTexture(ren, "res/x.bmp");
+    SDL_Texture *oTexture = loadTexture(ren, "res/o.bmp");
 
     //Test shit
     int fArray[9] = {   0, 0, 0,
