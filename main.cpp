@@ -66,11 +66,11 @@ int main()
     bool ended = false;
     bool menu = true;
 
-    Sprite mbgSprite(loadTexture(ren, "res/Menubg.bmp"));
-    Sprite pbSprite(loadTexture(ren, "res/pb.bmp"), 75, 100);
-    Sprite selSprite(loadTexture(ren, "res/selection.bmp"), 65, 100);
-    Sprite ebSprite(loadTexture(ren, "res/eb.bmp"), 75, 200);
-    Sprite bgSprite(loadTexture(ren, "res/bg.bmp"), 0, 3);
+    Sprite spr_menuBg(loadTexture(ren, "res/bg_menu.bmp"));
+    Sprite spr_playButton(loadTexture(ren, "res/button_play.bmp"), 75, 100);
+    Sprite spr_selectionArrow(loadTexture(ren, "res/selectionarrow.bmp"), 65, 100);
+    Sprite spr_exitButton(loadTexture(ren, "res/button_exit.bmp"), 75, 200);
+    Sprite spr_gameBg(loadTexture(ren, "res/bg_game.bmp"), 0, 3);
 
     SDL_Texture *efTexture = loadTexture(ren, "res/empty.bmp");
     SDL_Rect efData;
@@ -109,7 +109,7 @@ int main()
                 menu = true;
             }
             //Draw background
-            bgSprite.draw(ren);
+            spr_gameBg.draw(ren);
             //Draw fields
             for (int i = 0; i < 9; i++)
             {
@@ -180,23 +180,23 @@ int main()
         }
         else
         {
-            mbgSprite.draw(ren);
-            pbSprite.draw(ren);
-            ebSprite.draw(ren);
+            spr_menuBg.draw(ren);
+            spr_playButton.draw(ren);
+            spr_exitButton.draw(ren);
 
-            if (pointIsInRect({event.motion.x, event.motion.y}, pbSprite.getRect()))
+            if (pointIsInRect({event.motion.x, event.motion.y}, spr_playButton.getRect()))
             {
-                selSprite.draw(ren);
+                spr_selectionArrow.draw(ren);
                 if (event.button.button == SDL_BUTTON_LEFT)
                 {
                     menu = false;
                 }
             }
-            if (pointIsInRect({event.motion.x, event.motion.y}, ebSprite.getRect()))
+            if (pointIsInRect({event.motion.x, event.motion.y}, spr_exitButton.getRect()))
             {
-                selSprite.move(0, 100);
-                selSprite.draw(ren);
-                selSprite.move(0, -100);
+                spr_selectionArrow.move(0, 100);
+                spr_selectionArrow.draw(ren);
+                spr_selectionArrow.move(0, -100);
 
                 if (event.button.button == SDL_BUTTON_LEFT)
                 {
