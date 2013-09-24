@@ -3,21 +3,22 @@
 
 using namespace std;
 
-namespace {
-
-void tictac_assert(bool expr, const string& message)
+namespace
 {
-    if(!expr)
+
+void tictac_assert(bool expr, const string &message)
+{
+    if (!expr)
     {
         cerr << message << endl;
         exit(1);
     }
 }
 
-bool checkWinrar(int* a, int p, bool& ended)
+bool checkWinrar(int *a, int p, bool &ended)
 {
     //1 = X, 2 = O
-    if( ((a[0] == p) && (a[1] == p) && (a[2] == p)) ||
+    if (((a[0] == p) && (a[1] == p) && (a[2] == p)) ||
             ((a[0] == p) && (a[4] == p) && (a[8] == p)) ||
             ((a[0] == p) && (a[3] == p) && (a[6] == p)) ||
             ((a[1] == p) && (a[4] == p) && (a[7] == p)) ||
@@ -34,7 +35,7 @@ bool checkWinrar(int* a, int p, bool& ended)
 
 bool mouseOver(int mx, int my, SDL_Rect r)
 {
-    return mx > r.x && mx < r.x+r.w && my > r.y && my < r.y+r.h;
+    return mx > r.x && mx < r.x + r.w && my > r.y && my < r.y + r.h;
 }
 
 }
@@ -46,8 +47,8 @@ int main()
     tictac_assert(win, SDL_GetError());
     SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     tictac_assert(ren, SDL_GetError());
-    const Uint8* keyDown = SDL_GetKeyboardState(nullptr);
-    
+    const Uint8 *keyDown = SDL_GetKeyboardState(nullptr);
+
     int turn = 0;
     bool ended = false;
     bool menu = true;
@@ -137,18 +138,18 @@ int main()
     SDL_FreeSurface(img);
 
     //Test shit
-    int fArray[9] = {	0, 0, 0,
+    int fArray[9] = {   0, 0, 0,
                         0, 0, 0,
                         0, 0, 0
                     };
 
     bool is_running = true;
-    while(is_running)
+    while (is_running)
     {
         SDL_Event event;
-        while(SDL_PollEvent(&event))
+        while (SDL_PollEvent(&event))
         {
-            switch(event.type)
+            switch (event.type)
             {
             case SDL_QUIT:
                 is_running = false;
@@ -159,38 +160,38 @@ int main()
         }
         SDL_RenderClear(ren);
 
-        if(!menu)
+        if (!menu)
         {
-            if(keyDown[SDL_SCANCODE_ESCAPE])
+            if (keyDown[SDL_SCANCODE_ESCAPE])
             {
                 menu = true;
             }
             //Draw background
             SDL_RenderCopy(ren, bgTexture, nullptr, &bgData);
             //Draw fields
-            for(int i = 0; i < 9; i++)
+            for (int i = 0; i < 9; i++)
             {
                 efData.x += 15;
 
-                if(fArray[i] == 0)
+                if (fArray[i] == 0)
                 {
                     SDL_RenderCopy(ren, efTexture, nullptr, &efData);
                 }
-                if(!ended)
+                if (!ended)
                 {
-                    if(mouseOver(event.motion.x, event.motion.y, efData))
+                    if (mouseOver(event.motion.x, event.motion.y, efData))
                     {
                         SDL_RenderCopy(ren, moTexture, nullptr, &efData);
-                        if(event.button.button == SDL_BUTTON_LEFT)
+                        if (event.button.button == SDL_BUTTON_LEFT)
                         {
-                            if(fArray[i] == 0)
+                            if (fArray[i] == 0)
                             {
-                                if(turn == 0)
+                                if (turn == 0)
                                 {
                                     fArray[i] = 1;
                                     turn = 1;
                                 }
-                                else if(turn == 1)
+                                else if (turn == 1)
                                 {
                                     fArray[i] = 2;
                                     turn = 0;
@@ -199,16 +200,16 @@ int main()
                         }
                     }
                 }
-                if(fArray[i] == 1)
+                if (fArray[i] == 1)
                 {
                     SDL_RenderCopy(ren, xTexture, nullptr, &efData);
                 }
-                if(fArray[i] == 2)
+                if (fArray[i] == 2)
                 {
                     SDL_RenderCopy(ren, oTexture, nullptr, &efData);
                 }
-                efData.x += efData.w+3;
-                if(i == 2 || i == 5)
+                efData.x += efData.w + 3;
+                if (i == 2 || i == 5)
                 {
                     efData.y += efData.h + 15;
                     efData.x = 0;
@@ -217,21 +218,21 @@ int main()
             efData.x = 0;
             efData.y = 13;
             //Check who won
-            if(!ended)
+            if (!ended)
             {
-                if(checkWinrar(fArray, 1, ended))
+                if (checkWinrar(fArray, 1, ended))
                 {
                     cout << "Winrar is X\n";
                 }
-                else if(checkWinrar(fArray, 2, ended))
+                else if (checkWinrar(fArray, 2, ended))
                 {
                     cout << "Winrar is O\n";
                 }
             }
-            if(keyDown[SDL_SCANCODE_R])
+            if (keyDown[SDL_SCANCODE_R])
             {
                 ended = false;
-                memset(fArray, 0, 9*sizeof(int));
+                memset(fArray, 0, 9 * sizeof(int));
                 turn = 0;
             }
         }
@@ -246,20 +247,20 @@ int main()
             //Exit button
             SDL_RenderCopy(ren, ebTexture, nullptr, &ebData);
 
-            if(mouseOver(event.motion.x, event.motion.y, pbData))
+            if (mouseOver(event.motion.x, event.motion.y, pbData))
             {
                 SDL_RenderCopy(ren, selTexture, nullptr, &selData);
-                if(event.button.button == SDL_BUTTON_LEFT)
+                if (event.button.button == SDL_BUTTON_LEFT)
                 {
                     menu = false;
                 }
             }
-            if(mouseOver(event.motion.x, event.motion.y, ebData))
+            if (mouseOver(event.motion.x, event.motion.y, ebData))
             {
                 selData.y += 100;
                 SDL_RenderCopy(ren, selTexture, nullptr, &selData);
                 selData.y -= 100;
-                if(event.button.button == SDL_BUTTON_LEFT)
+                if (event.button.button == SDL_BUTTON_LEFT)
                 {
                     is_running = false;
                 }
