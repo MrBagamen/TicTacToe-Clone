@@ -72,15 +72,15 @@ int main()
     Sprite spr_exitButton(loadTexture(ren, "res/button_exit.bmp"), 75, 200);
     Sprite spr_gameBg(loadTexture(ren, "res/bg_game.bmp"), 0, 3);
 
-    SDL_Texture *efTexture = loadTexture(ren, "res/empty.bmp");
+    SDL_Texture *tex_field_empty = loadTexture(ren, "res/field_empty.bmp");
     SDL_Rect efData;
-    SDL_QueryTexture(efTexture, nullptr, nullptr, &efData.w, &efData.h);
+    SDL_QueryTexture(tex_field_empty, nullptr, nullptr, &efData.w, &efData.h);
     efData.x = 0;
     efData.y = 13;
 
-    SDL_Texture *moTexture = loadTexture(ren, "res/collision.bmp");
-    SDL_Texture *xTexture = loadTexture(ren, "res/x.bmp");
-    SDL_Texture *oTexture = loadTexture(ren, "res/o.bmp");
+    SDL_Texture *tex_field_highlighted = loadTexture(ren, "res/field_highlighted.bmp");
+    SDL_Texture *tex_field_x = loadTexture(ren, "res/field_x.bmp");
+    SDL_Texture *tex_field_o = loadTexture(ren, "res/field_o.bmp");
 
     char board[9];
     memset(board, 0, 9);
@@ -117,13 +117,13 @@ int main()
 
                 if (board[i] == 0)
                 {
-                    SDL_RenderCopy(ren, efTexture, nullptr, &efData);
+                    SDL_RenderCopy(ren, tex_field_empty, nullptr, &efData);
                 }
                 if (!ended)
                 {
                     if (pointIsInRect({event.motion.x, event.motion.y}, efData))
                     {
-                        SDL_RenderCopy(ren, moTexture, nullptr, &efData);
+                        SDL_RenderCopy(ren, tex_field_highlighted, nullptr, &efData);
                         if (event.button.button == SDL_BUTTON_LEFT)
                         {
                             if (board[i] == 0)
@@ -144,11 +144,11 @@ int main()
                 }
                 if (board[i] == 1)
                 {
-                    SDL_RenderCopy(ren, xTexture, nullptr, &efData);
+                    SDL_RenderCopy(ren, tex_field_x, nullptr, &efData);
                 }
                 if (board[i] == 2)
                 {
-                    SDL_RenderCopy(ren, oTexture, nullptr, &efData);
+                    SDL_RenderCopy(ren, tex_field_o, nullptr, &efData);
                 }
                 efData.x += efData.w + 3;
                 if (i == 2 || i == 5)
