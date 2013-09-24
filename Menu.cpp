@@ -43,7 +43,7 @@ void Menu::onEvent(const SDL_Event &event)
     {
         if (pointIsInRect({event.button.x, event.button.y}, spr_playButton.getRect()))
         {
-            driver::menu = false;
+            driver::setState("game");
         }
         if (pointIsInRect({event.button.x, event.button.y}, spr_exitButton.getRect()))
         {

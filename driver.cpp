@@ -10,7 +10,10 @@ namespace driver
 {
 
 SDL_Renderer *renderer;
-bool menu;
+bool running;
+
+std::map<std::string, State*> m_states;
+State* m_state;
 
 void init()
 {
@@ -20,7 +23,46 @@ void init()
     tictac_assert(renderer, SDL_GetError());
 
     tictac_assert(IMG_Init(IMG_INIT_PNG) == IMG_INIT_PNG, IMG_GetError());
-    menu = true;
+    running = true;
+}
+
+void addState(const std::string &name, State *state)
+{
+    m_states[name] = state;
+}
+
+void setState(const std::string &name)
+{
+    m_state = m_states[name];
+}
+
+void update()
+{
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        switch (event.type)
+        {
+        case SDL_QUIT:
+            running = false;
+            break;
+        default:
+            ;
+        }
+
+        m_state->onEvent(event);
+    }
+
+    m_state->onUpdate();
+
+    SDL_RenderPresent(driver::renderer);
+    SDL_Delay(16);
+}
+
+void quit()
+{
+    IMG_Quit();
+    SDL_Quit();
 }
 
 }

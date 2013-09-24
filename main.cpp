@@ -16,42 +16,13 @@ int main()
 {
     driver::init();
 
-    Game game;
-    Menu menu;
+    driver::addState("menu", new Menu);
+    driver::addState("game", new Game);
 
-    bool is_running = true;
-    while (is_running)
-    {
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                is_running = false;
-                break;
-            default:
-                ;
-            }
+    driver::setState("menu");
 
-            if (!driver::menu)
-                game.onEvent(event);
-            else
-                menu.onEvent(event);
-        }
+    while (driver::running)
+        driver::update();
 
-        if (!driver::menu)
-        {
-            game.onUpdate();
-        }
-        else
-        {
-            menu.onUpdate();
-        }
-
-        SDL_RenderPresent(driver::renderer);
-        SDL_Delay(16);
-    }
-
-    SDL_Quit();
+    driver::quit();
 }

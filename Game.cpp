@@ -26,7 +26,7 @@ void Game::onUpdate()
 
     if (keyDown[SDL_SCANCODE_ESCAPE])
     {
-        driver::menu = true;
+        driver::setState("menu");
     }
     //Draw background
     spr_gameBg.draw();
