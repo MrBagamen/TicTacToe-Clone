@@ -17,6 +17,7 @@ Game::Game() :
     tex_field_o(loadTexture("res/field_o.bmp"))
 {
     memset(board, 0, 9);
+    m_highlightedTile = -1;
 }
 
 void Game::update()
@@ -72,6 +73,7 @@ void Game::update()
         ended = false;
         memset(board, 0, 9);
         turn = 0;
+        m_highlightedTile = -1;
     }
 }
 

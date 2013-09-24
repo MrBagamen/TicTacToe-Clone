@@ -26,7 +26,7 @@ private:
     static constexpr SDL_Point FIELD_GAP   = {18, 15};
     int m_highlightedTile;
 
-    int tileIndexFromPoint(SDL_Point p);
+    static int tileIndexFromPoint(SDL_Point p);
     bool checkWinrar(int player);
 };
 
