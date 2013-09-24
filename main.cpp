@@ -13,22 +13,66 @@ bool allEqual(int *a, int v1, int v2);
 
 //Global variables
 int turn = 0;
-bool keyDown[317];
 bool ended = false;
+bool menu = true;
 
 int main(int argc, char* argv[])
 {
     SDL_Event e;
+    SDL_Surface *img;
     SDL_Window *win = SDL_CreateWindow("TicTacToe - Press R to restart.", 100, 100, 320, 400, SDL_WINDOW_SHOWN);
     checkError(win);
     SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     checkError(ren);
+    const Uint8* keyDown = SDL_GetKeyboardState(nullptr);
 
-    //Fill keyPress array
-    memset(keyDown, false, 317*sizeof(bool));
+
+    //Menu Background
+    img = SDL_LoadBMP("res/Menubg.bmp");
+    checkError(img);
+    SDL_Rect mbgData;
+    mbgData.x = 0;
+    mbgData.y = 0;
+    mbgData.w = img->w;
+    mbgData.h = img->h;
+    SDL_Texture *mbgTexture = SDL_CreateTextureFromSurface(ren, img);
+    SDL_FreeSurface(img);
+
+    //Play Button
+    img = SDL_LoadBMP("res/pb.bmp");
+    checkError(img);
+    SDL_Rect pbData;
+    pbData.x = 75;
+    pbData.y = 100;
+    pbData.w = img->w;
+    pbData.h = img->h;
+    SDL_Texture *pbTexture = SDL_CreateTextureFromSurface(ren, img);
+    SDL_FreeSurface(img);
+
+    //Selection arrow
+    img = SDL_LoadBMP("res/selection.bmp");
+    checkError(img);
+    SDL_Rect selData;
+    selData.x = 65;
+    selData.y = 100;
+    selData.w = img->w;
+    selData.h = img->h;
+    SDL_Texture *selTexture = SDL_CreateTextureFromSurface(ren, img);
+    SDL_FreeSurface(img);
+
+    //Exit
+    img = SDL_LoadBMP("res/eb.bmp");
+    checkError(img);
+    SDL_Rect ebData;
+    ebData.x = 75;
+    ebData.y = 200;
+    ebData.w = img->w;
+    ebData.h = img->h;
+    SDL_Texture *ebTexture = SDL_CreateTextureFromSurface(ren, img);
+    SDL_FreeSurface(img);
 
     //Background
-    SDL_Surface *img = SDL_LoadBMP("res/bg.bmp");
+    img = SDL_LoadBMP("res/bg.bmp");
     checkError(img);
     SDL_Rect bgData;
     bgData.x = 0;
@@ -83,95 +127,124 @@ int main(int argc, char* argv[])
             case SDL_QUIT:
                 is_running = false;
                 break;
-            case SDL_KEYDOWN:
-                keyDown[e.key.keysym.sym] = true;
-                break;
-            case SDL_KEYUP:
-                keyDown[e.key.keysym.sym] = false;
-                break;
             default:
                 ;
             }
         }
-        if(keyDown[SDLK_ESCAPE])
-        {
-            is_running = false;
-        }
         SDL_RenderClear(ren);
 
-        //Draw background
-        SDL_RenderCopy(ren, bgTexture, nullptr, &bgData);
-        //Draw fields
-        for(int i = 0; i < 9; i++)
+        if(!menu)
         {
-            efData.x += 15;
-
-            if(fArray[i] == 0)
+            if(keyDown[SDL_SCANCODE_ESCAPE])
             {
-                SDL_RenderCopy(ren, efTexture, nullptr, &efData);
+                menu = true;
             }
-            if(!ended)
+            //Draw background
+            SDL_RenderCopy(ren, bgTexture, nullptr, &bgData);
+            //Draw fields
+            for(int i = 0; i < 9; i++)
             {
-                if(mouseOver(e.motion.x, e.motion.y, efData))
+                efData.x += 15;
+
+                if(fArray[i] == 0)
                 {
-                    SDL_RenderCopy(ren, moTexture, nullptr, &efData);
-                    if(e.button.button == SDL_BUTTON_LEFT)
+                    SDL_RenderCopy(ren, efTexture, nullptr, &efData);
+                }
+                if(!ended)
+                {
+                    if(mouseOver(e.motion.x, e.motion.y, efData))
                     {
-                        if(fArray[i] == 0)
+                        SDL_RenderCopy(ren, moTexture, nullptr, &efData);
+                        if(e.button.button == SDL_BUTTON_LEFT)
                         {
-                            if(turn == 0)
+                            if(fArray[i] == 0)
                             {
-                                fArray[i] = 1;
-                                turn = 1;
-                            }
-                            else if(turn == 1)
-                            {
-                                fArray[i] = 2;
-                                turn = 0;
+                                if(turn == 0)
+                                {
+                                    fArray[i] = 1;
+                                    turn = 1;
+                                }
+                                else if(turn == 1)
+                                {
+                                    fArray[i] = 2;
+                                    turn = 0;
+                                }
                             }
                         }
                     }
                 }
+                if(fArray[i] == 1)
+                {
+                    SDL_RenderCopy(ren, xTexture, nullptr, &efData);
+                }
+                if(fArray[i] == 2)
+                {
+                    SDL_RenderCopy(ren, oTexture, nullptr, &efData);
+                }
+                efData.x += efData.w+3;
+                if(i == 2 || i == 5)
+                {
+                    efData.y += efData.h + 15;
+                    efData.x = 0;
+                }
             }
-            if(fArray[i] == 1)
+            efData.x = 0;
+            efData.y = 13;
+            //Check who won
+            if(!ended)
             {
-                SDL_RenderCopy(ren, xTexture, nullptr, &efData);
+                if(checkWinrar(fArray, 1))
+                {
+                    cout << "Winrar is X\n";
+                }
+                else if(checkWinrar(fArray, 2))
+                {
+                    cout << "Winrar is O\n";
+                }
             }
-            if(fArray[i] == 2)
+            if(keyDown[SDL_SCANCODE_R])
             {
-                SDL_RenderCopy(ren, oTexture, nullptr, &efData);
-            }
-            efData.x += efData.w+3;
-            if(i == 2 || i == 5)
-            {
-                efData.y += efData.h + 15;
-                efData.x = 0;
+                ended = false;
+                memset(fArray, 0, 9*sizeof(int));
+                turn = 0;
             }
         }
-        efData.x = 0;
-        efData.y = 13;
-        //Check who won
-        if(!ended)
+        else
         {
-            if(checkWinrar(fArray, 1))
+            //MENU BG
+            SDL_RenderCopy(ren, mbgTexture, nullptr, &mbgData);
+
+            //Play button
+            SDL_RenderCopy(ren, pbTexture, nullptr, &pbData);
+
+            //Exit button
+            SDL_RenderCopy(ren, ebTexture, nullptr, &ebData);
+
+            if(mouseOver(e.motion.x, e.motion.y, pbData))
             {
-                cout << "Winrar is X\n";
+                SDL_RenderCopy(ren, selTexture, nullptr, &selData);
+                if(e.button.button == SDL_BUTTON_LEFT)
+                {
+                    menu = false;
+                }
             }
-            else if(checkWinrar(fArray, 2))
+            if(mouseOver(e.motion.x, e.motion.y, ebData))
             {
-                cout << "Winrar is O\n";
+                selData.y += 100;
+                SDL_RenderCopy(ren, selTexture, nullptr, &selData);
+                selData.y -= 100;
+                if(e.button.button == SDL_BUTTON_LEFT)
+                {
+                    is_running = false;
+                }
             }
         }
-        if(keyDown[SDLK_r])
-        {
-            ended = false;
-            memset(fArray, 0, 9*sizeof(int));
-            turn = 0;
-        }
+
         SDL_RenderPresent(ren);
         SDL_Delay(16);
     }
 
+    SDL_Quit();
     return 0;
 }
 
@@ -188,19 +261,18 @@ void checkError(T a)
 bool checkWinrar(int* a, int p)
 {
     //1 = X, 2 = O
-    if( a[0] == p && a[1] == p && a[2] == p ||
-            a[0] == p && a[4] == p && a[8] == p ||
-            a[0] == p && a[3] == p && a[6] == p ||
-            a[1] == p && a[4] == p && a[7] == p ||
-            a[2] == p && a[4] == p && a[6] == p ||
-            a[2] == p && a[5] == p && a[8] == p ||
-            a[3] == p && a[4] == p && a[5] == p ||
-            a[6] == p && a[7] == p && a[8] == p)
+    if( ((a[0] == p) && (a[1] == p) && (a[2] == p)) ||
+            ((a[0] == p) && (a[4] == p) && (a[8] == p)) ||
+            ((a[0] == p) && (a[3] == p) && (a[6] == p)) ||
+            ((a[1] == p) && (a[4] == p) && (a[7] == p)) ||
+            ((a[2] == p) && (a[4] == p) && (a[6] == p)) ||
+            ((a[2] == p) && (a[5] == p) && (a[8] == p)) ||
+            ((a[3] == p) && (a[4] == p) && (a[5] == p)) ||
+            ((a[6] == p) && (a[7] == p) && (a[8] == p)))
     {
         ended = true;
         return true;
     }
-    //if(a[0] == p && a[4] == p && a[8] == p)
     return false;
 }
 
