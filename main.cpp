@@ -3,24 +3,29 @@
 
 using namespace std;
 
+//Function prototypes
 template <class T>
 void checkError(T);
 bool mouseOver(int mx, int my, SDL_Rect r);
+bool checkWinrar(int* a, int p);
+bool allEqual(int* a, int v);
+bool allEqual(int *a, int v1, int v2);
+
+//Global variables
 int turn = 0;
 bool keyDown[317];
 bool ended = false;
-bool checkWinrar(int* a,int p);
 
 int main(int argc, char* argv[])
 {
 	SDL_Event e;
-	SDL_Window *win = SDL_CreateWindow("TicTacToe", 100, 100, 320, 400, SDL_WINDOW_SHOWN);
+	SDL_Window *win = SDL_CreateWindow("TicTacToe - Press R to restart.", 100, 100, 320, 400, SDL_WINDOW_SHOWN);
 	checkError(win);
 	SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	checkError(ren);
 
     //Fill keyPress array
-    memset(keyDown, false, 317);
+    memset(keyDown, false, 317*sizeof(bool));
 	
 	//Background
 	SDL_Surface *img = SDL_LoadBMP("res/bg.bmp");
@@ -122,7 +127,7 @@ int main(int argc, char* argv[])
 						    	fArray[i] = 2;
 						    	turn = 0;
 						    }
-					    }
+                        }
 				    }
 			    }
             }
@@ -155,17 +160,13 @@ int main(int argc, char* argv[])
                 cout << "Winrar is O\n";
             }
 		}
-        else
+        if(keyDown[SDLK_r])
         {
-            if(keyDown[SDLK_r])
-            {
-                ended = false;
-                memset(fArray, 0, 9);
-                turn = 0;
-
-            }
-        }
-		SDL_RenderPresent(ren);
+            ended = false;
+            memset(fArray, 0, 9*sizeof(int));
+            turn = 0;
+		}
+        SDL_RenderPresent(ren);
 		SDL_Delay(16);
 	}
 	
@@ -185,12 +186,32 @@ void checkError(T a)
 bool checkWinrar(int* a, int p)
 {
     //1 = X, 2 = O
-    if(a[0] == p && a[1] == p && a[2] == p)
+    if( a[0] == p && a[1] == p && a[2] == p ||
+        a[0] == p && a[4] == p && a[8] == p ||
+        a[0] == p && a[3] == p && a[6] == p ||
+        a[1] == p && a[4] == p && a[7] == p ||
+        a[2] == p && a[4] == p && a[6] == p ||
+        a[2] == p && a[5] == p && a[8] == p ||
+        a[3] == p && a[4] == p && a[5] == p ||
+        a[6] == p && a[7] == p && a[8] == p)
     {
         ended = true;
         return true;
     }
+    //if(a[0] == p && a[4] == p && a[8] == p)
     return false;
+}
+
+bool allEqual(int* a, int v)
+{
+    for(int i = 0; i < 9; i++)
+    {
+        if(a[i] != v)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool mouseOver(int mx, int my, SDL_Rect r)
