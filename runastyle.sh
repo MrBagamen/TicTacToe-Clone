@@ -9,4 +9,4 @@ astyle \
 --pad-oper \
 --pad-header \
 --unpad-paren \
-*.cpp
+*.cpp *.hpp
