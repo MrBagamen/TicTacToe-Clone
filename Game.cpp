@@ -86,6 +86,9 @@ void Game::onEvent(const SDL_Event &event)
     {
         int index = tileIndexFromPoint({event.button.x, event.button.y});
 
+        if (index == -1)
+            return;
+
         if (board[index] == 0)
         {
             if (turn == 0)
