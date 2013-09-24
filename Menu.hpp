@@ -2,13 +2,14 @@
 #define MENU_HPP
 
 #include "Sprite.hpp"
+#include "State.hpp"
 
-class Menu
+class Menu : public State
 {
 public:
     Menu();
-    void update();
-    void onEvent(SDL_Event &event);
+    virtual void onUpdate();
+    virtual void onEvent(const SDL_Event &event);
 private:
     Sprite spr_menuBg;
     Sprite spr_playButton;

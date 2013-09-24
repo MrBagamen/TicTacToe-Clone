@@ -20,7 +20,7 @@ Game::Game() :
     m_highlightedTile = -1;
 }
 
-void Game::update()
+void Game::onUpdate()
 {
     const Uint8 *keyDown = SDL_GetKeyboardState(nullptr);
 
@@ -77,7 +77,7 @@ void Game::update()
     }
 }
 
-void Game::onEvent(SDL_Event &event)
+void Game::onEvent(const SDL_Event &event)
 {
     if (ended)
         return;

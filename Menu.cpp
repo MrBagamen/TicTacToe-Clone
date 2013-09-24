@@ -15,7 +15,7 @@ Menu::Menu() :
 
 }
 
-void Menu::update()
+void Menu::onUpdate()
 {
     spr_menuBg.draw();
     spr_playButton.draw();
@@ -37,7 +37,7 @@ void Menu::update()
     spr_selectionArrow.draw();
 }
 
-void Menu::onEvent(SDL_Event &event)
+void Menu::onEvent(const SDL_Event &event)
 {
     if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
     {

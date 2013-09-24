@@ -2,13 +2,14 @@
 #define GAME_HPP
 
 #include "Sprite.hpp"
+#include "State.hpp"
 
-class Game
+class Game : public State
 {
 public:
     Game();
-    void update();
-    void onEvent(SDL_Event &event);
+    virtual void onUpdate();
+    virtual void onEvent(const SDL_Event &event);
 private:
     char board[9];
     int turn = 0;

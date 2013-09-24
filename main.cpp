@@ -42,11 +42,11 @@ int main()
 
         if (!driver::menu)
         {
-            game.update();
+            game.onUpdate();
         }
         else
         {
-            menu.update();
+            menu.onUpdate();
         }
 
         SDL_RenderPresent(driver::renderer);
