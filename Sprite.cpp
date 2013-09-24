@@ -1,4 +1,5 @@
 #include "Sprite.hpp"
+#include "driver.hpp"
 
 Sprite::Sprite(SDL_Texture *texture, int x, int y) :
     m_texture(texture)
@@ -8,9 +9,9 @@ Sprite::Sprite(SDL_Texture *texture, int x, int y) :
     m_rect.y = y;
 }
 
-void Sprite::draw(SDL_Renderer *renderer) const
+void Sprite::draw() const
 {
-    SDL_RenderCopy(renderer, m_texture, nullptr, &m_rect);
+    SDL_RenderCopy(driver::renderer, m_texture, nullptr, &m_rect);
 }
 
 void Sprite::move(int xOff, int yOff)

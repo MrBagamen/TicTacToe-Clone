@@ -6,15 +6,13 @@
 class Game
 {
 public:
-    Game(SDL_Renderer *ren);
+    Game();
     void update();
     void onEvent(SDL_Event &event);
 private:
     char board[9];
     int turn = 0;
     bool ended = false;
-
-    SDL_Renderer *m_renderer;
 
     Sprite spr_gameBg;
 

@@ -1,18 +1,19 @@
 #include "Game.hpp"
 #include "util.hpp"
 
+#include "driver.hpp"
+
 #include <cstring>
 #include <iostream>
 
 using namespace std;
 
-Game::Game(SDL_Renderer *ren) :
-    m_renderer(ren),
-    spr_gameBg(loadTexture(m_renderer, "res/bg_game.bmp")),
-    tex_field_empty(loadTexture(m_renderer, "res/field_empty.bmp")),
-    tex_field_highlighted(loadTexture(m_renderer, "res/field_highlighted.bmp")),
-    tex_field_x(loadTexture(m_renderer, "res/field_x.bmp")),
-    tex_field_o(loadTexture(m_renderer, "res/field_o.bmp"))
+Game::Game() :
+    spr_gameBg(loadTexture("res/bg_game.bmp")),
+    tex_field_empty(loadTexture("res/field_empty.bmp")),
+    tex_field_highlighted(loadTexture("res/field_highlighted.bmp")),
+    tex_field_x(loadTexture("res/field_x.bmp")),
+    tex_field_o(loadTexture("res/field_o.bmp"))
 {
     memset(board, 0, 9);
 }
@@ -23,29 +24,28 @@ void Game::update()
 
     if (keyDown[SDL_SCANCODE_ESCAPE])
     {
-        extern bool inMenu;
-        inMenu = true;
+        driver::menu = true;
     }
     //Draw background
-    spr_gameBg.draw(m_renderer);
+    spr_gameBg.draw();
     //Draw fields
     SDL_Rect rect {FIELD_START.x, FIELD_START.y, FIELD_SIZE.x, FIELD_SIZE.y};
     for (int i = 0; i < 9; i++)
     {
         if (board[i] == 0)
         {
-            SDL_RenderCopy(m_renderer, tex_field_empty, nullptr, &rect);
+            SDL_RenderCopy(driver::renderer, tex_field_empty, nullptr, &rect);
 
             if (m_highlightedTile == i)
-                SDL_RenderCopy(m_renderer, tex_field_highlighted, nullptr, &rect);
+                SDL_RenderCopy(driver::renderer, tex_field_highlighted, nullptr, &rect);
         }
         if (board[i] == 1)
         {
-            SDL_RenderCopy(m_renderer, tex_field_x, nullptr, &rect);
+            SDL_RenderCopy(driver::renderer, tex_field_x, nullptr, &rect);
         }
         if (board[i] == 2)
         {
-            SDL_RenderCopy(m_renderer, tex_field_o, nullptr, &rect);
+            SDL_RenderCopy(driver::renderer, tex_field_o, nullptr, &rect);
         }
         rect.x += FIELD_SIZE.x + FIELD_GAP.x;
         if (i == 2 || i == 5)

@@ -1,13 +1,13 @@
 #include "Menu.hpp"
 
 #include "util.hpp"
+#include "driver.hpp"
 
-Menu::Menu(SDL_Renderer *renderer) :
-    m_renderer(renderer),
-    spr_menuBg(loadTexture(m_renderer, "res/bg_menu.bmp")),
-    spr_playButton(loadTexture(m_renderer, "res/button_play.bmp"), 75, 100),
-    spr_selectionArrow(loadTexture(m_renderer, "res/selectionarrow.bmp"), 65, 100),
-    spr_exitButton(loadTexture(m_renderer, "res/button_exit.bmp"), 75, 200),
+Menu::Menu() :
+    spr_menuBg(loadTexture("res/bg_menu.bmp")),
+    spr_playButton(loadTexture("res/button_play.bmp"), 75, 100),
+    spr_selectionArrow(loadTexture("res/selectionarrow.bmp"), 65, 100),
+    spr_exitButton(loadTexture("res/button_exit.bmp"), 75, 200),
     m_selectedItem(0)
 {
 
@@ -15,9 +15,9 @@ Menu::Menu(SDL_Renderer *renderer) :
 
 void Menu::update()
 {
-    spr_menuBg.draw(m_renderer);
-    spr_playButton.draw(m_renderer);
-    spr_exitButton.draw(m_renderer);
+    spr_menuBg.draw();
+    spr_playButton.draw();
+    spr_exitButton.draw();
 
     if (m_selectedItem == 0)
     {
@@ -32,7 +32,7 @@ void Menu::update()
         return;
     }
 
-    spr_selectionArrow.draw(m_renderer);
+    spr_selectionArrow.draw();
 }
 
 void Menu::onEvent(SDL_Event &event)
@@ -41,8 +41,7 @@ void Menu::onEvent(SDL_Event &event)
     {
         if (pointIsInRect({event.button.x, event.button.y}, spr_playButton.getRect()))
         {
-            extern bool inMenu;
-            inMenu = false;
+            driver::menu = false;
         }
         if (pointIsInRect({event.button.x, event.button.y}, spr_exitButton.getRect()))
         {

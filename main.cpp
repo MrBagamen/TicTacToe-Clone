@@ -2,6 +2,7 @@
 #include "util.hpp"
 #include "Game.hpp"
 #include "Menu.hpp"
+#include "driver.hpp"
 
 #include <iostream>
 #include <string>
@@ -11,19 +12,12 @@
 
 using namespace std;
 
-bool inMenu = true;
-
 int main()
 {
-    SDL_Window *win = SDL_CreateWindow("TicTacToe - Press R to restart.", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 320, 400, SDL_WINDOW_SHOWN);
-    tictac_assert(win, SDL_GetError());
-    SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    tictac_assert(ren, SDL_GetError());
+    driver::init();
 
-    tictac_assert(IMG_Init(IMG_INIT_PNG) == IMG_INIT_PNG, IMG_GetError());
-
-    Game game(ren);
-    Menu menu(ren);
+    Game game;
+    Menu menu;
 
     bool is_running = true;
     while (is_running)
@@ -40,13 +34,13 @@ int main()
                 ;
             }
 
-            if (!inMenu)
+            if (!driver::menu)
                 game.onEvent(event);
             else
                 menu.onEvent(event);
         }
 
-        if (!inMenu)
+        if (!driver::menu)
         {
             game.update();
         }
@@ -55,7 +49,7 @@ int main()
             menu.update();
         }
 
-        SDL_RenderPresent(ren);
+        SDL_RenderPresent(driver::renderer);
         SDL_Delay(16);
     }
 
