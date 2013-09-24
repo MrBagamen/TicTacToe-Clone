@@ -23,8 +23,8 @@ void Game::update()
 
     if (keyDown[SDL_SCANCODE_ESCAPE])
     {
-        extern bool menu;
-        menu = true;
+        extern bool inMenu;
+        inMenu = true;
     }
     //Draw background
     spr_gameBg.draw(m_renderer);

@@ -1,6 +1,7 @@
 #include "Sprite.hpp"
 #include "util.hpp"
 #include "Game.hpp"
+#include "Menu.hpp"
 
 #include <iostream>
 #include <string>
@@ -10,7 +11,7 @@
 
 using namespace std;
 
-bool menu = true;
+bool inMenu = true;
 
 int main()
 {
@@ -21,12 +22,8 @@ int main()
 
     tictac_assert(IMG_Init(IMG_INIT_PNG) == IMG_INIT_PNG, IMG_GetError());
 
-    Sprite spr_menuBg(loadTexture(ren, "res/bg_menu.bmp"));
-    Sprite spr_playButton(loadTexture(ren, "res/button_play.bmp"), 75, 100);
-    Sprite spr_selectionArrow(loadTexture(ren, "res/selectionarrow.bmp"), 65, 100);
-    Sprite spr_exitButton(loadTexture(ren, "res/button_exit.bmp"), 75, 200);
-
     Game game(ren);
+    Menu menu(ren);
 
     bool is_running = true;
     while (is_running)
@@ -43,39 +40,19 @@ int main()
                 ;
             }
 
-            if (!menu)
+            if (!inMenu)
                 game.onEvent(event);
+            else
+                menu.onEvent(event);
         }
 
-        if (!menu)
+        if (!inMenu)
         {
             game.update();
         }
         else
         {
-            spr_menuBg.draw(ren);
-            spr_playButton.draw(ren);
-            spr_exitButton.draw(ren);
-
-            if (pointIsInRect({event.motion.x, event.motion.y}, spr_playButton.getRect()))
-            {
-                spr_selectionArrow.draw(ren);
-                if (event.button.button == SDL_BUTTON_LEFT)
-                {
-                    menu = false;
-                }
-            }
-            if (pointIsInRect({event.motion.x, event.motion.y}, spr_exitButton.getRect()))
-            {
-                spr_selectionArrow.move(0, 100);
-                spr_selectionArrow.draw(ren);
-                spr_selectionArrow.move(0, -100);
-
-                if (event.button.button == SDL_BUTTON_LEFT)
-                {
-                    is_running = false;
-                }
-            }
+            menu.update();
         }
 
         SDL_RenderPresent(ren);
