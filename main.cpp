@@ -20,7 +20,7 @@ void tictac_assert(bool expr, const string &message)
     }
 }
 
-bool checkWinrar(int *a, int p, bool &ended)
+bool checkWinrar(char *a, int p, bool &ended)
 {
     //1 = X, 2 = O
     if (((a[0] == p) && (a[1] == p) && (a[2] == p)) ||
@@ -82,11 +82,8 @@ int main()
     SDL_Texture *xTexture = loadTexture(ren, "res/x.bmp");
     SDL_Texture *oTexture = loadTexture(ren, "res/o.bmp");
 
-    //Test shit
-    int fArray[9] = {   0, 0, 0,
-                        0, 0, 0,
-                        0, 0, 0
-                    };
+    char board[9];
+    memset(board, 0, 9);
 
     bool is_running = true;
     while (is_running)
@@ -118,7 +115,7 @@ int main()
             {
                 efData.x += 15;
 
-                if (fArray[i] == 0)
+                if (board[i] == 0)
                 {
                     SDL_RenderCopy(ren, efTexture, nullptr, &efData);
                 }
@@ -129,27 +126,27 @@ int main()
                         SDL_RenderCopy(ren, moTexture, nullptr, &efData);
                         if (event.button.button == SDL_BUTTON_LEFT)
                         {
-                            if (fArray[i] == 0)
+                            if (board[i] == 0)
                             {
                                 if (turn == 0)
                                 {
-                                    fArray[i] = 1;
+                                    board[i] = 1;
                                     turn = 1;
                                 }
                                 else if (turn == 1)
                                 {
-                                    fArray[i] = 2;
+                                    board[i] = 2;
                                     turn = 0;
                                 }
                             }
                         }
                     }
                 }
-                if (fArray[i] == 1)
+                if (board[i] == 1)
                 {
                     SDL_RenderCopy(ren, xTexture, nullptr, &efData);
                 }
-                if (fArray[i] == 2)
+                if (board[i] == 2)
                 {
                     SDL_RenderCopy(ren, oTexture, nullptr, &efData);
                 }
@@ -165,11 +162,11 @@ int main()
             //Check who won
             if (!ended)
             {
-                if (checkWinrar(fArray, 1, ended))
+                if (checkWinrar(board, 1, ended))
                 {
                     cout << "Winrar is X\n";
                 }
-                else if (checkWinrar(fArray, 2, ended))
+                else if (checkWinrar(board, 2, ended))
                 {
                     cout << "Winrar is O\n";
                 }
@@ -177,7 +174,7 @@ int main()
             if (keyDown[SDL_SCANCODE_R])
             {
                 ended = false;
-                memset(fArray, 0, 9 * sizeof(int));
+                memset(board, 0, 9);
                 turn = 0;
             }
         }
