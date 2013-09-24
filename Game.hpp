@@ -29,6 +29,7 @@ private:
     int m_highlightedTile;
 
     int tileIndexFromPoint(SDL_Point p);
+    bool checkWinrar(int player);
 };
 
 #endif // GAME_HPP

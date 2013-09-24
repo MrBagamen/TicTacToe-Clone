@@ -57,11 +57,11 @@ void Game::update()
     //Check who won
     if (!ended)
     {
-        if (checkWinrar(board, 1, ended))
+        if (checkWinrar(1))
         {
             cout << "Winrar is X\n";
         }
-        else if (checkWinrar(board, 2, ended))
+        else if (checkWinrar(2))
         {
             cout << "Winrar is O\n";
         }
@@ -123,4 +123,22 @@ int Game::tileIndexFromPoint(SDL_Point p)
     }
 
     return -1;
+}
+
+bool Game::checkWinrar(int player)
+{
+    //1 = X, 2 = O
+    if (((board[0] == player) && (board[1] == player) && (board[2] == player)) ||
+            ((board[0] == player) && (board[4] == player) && (board[8] == player)) ||
+            ((board[0] == player) && (board[3] == player) && (board[6] == player)) ||
+            ((board[1] == player) && (board[4] == player) && (board[7] == player)) ||
+            ((board[2] == player) && (board[4] == player) && (board[6] == player)) ||
+            ((board[2] == player) && (board[5] == player) && (board[8] == player)) ||
+            ((board[3] == player) && (board[4] == player) && (board[5] == player)) ||
+            ((board[6] == player) && (board[7] == player) && (board[8] == player)))
+    {
+        ended = true;
+        return true;
+    }
+    return false;
 }
