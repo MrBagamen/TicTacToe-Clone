@@ -12,8 +12,8 @@ namespace driver
 SDL_Renderer *renderer;
 bool running;
 
-std::map<std::string, State*> m_states;
-State* m_state;
+std::map<std::string, State *> m_states;
+State *m_state;
 
 void init()
 {

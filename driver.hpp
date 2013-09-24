@@ -11,8 +11,8 @@ namespace driver
 {
 
 void init();
-void addState(const std::string& name, State *state);
-void setState(const std::string& name);
+void addState(const std::string &name, State *state);
+void setState(const std::string &name);
 void update();
 void quit();
 
