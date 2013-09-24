@@ -53,6 +53,8 @@ SDL_Texture* loadTexture(SDL_Renderer* renderer, const string& filename)
 
 }
 
+constexpr SDL_Point FIELD_SIZE = {85, 85};
+
 int main()
 {
     SDL_Window *win = SDL_CreateWindow("TicTacToe - Press R to restart.", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 320, 400, SDL_WINDOW_SHOWN);
@@ -73,11 +75,6 @@ int main()
     Sprite spr_gameBg(loadTexture(ren, "res/bg_game.bmp"), 0, 3);
 
     SDL_Texture *tex_field_empty = loadTexture(ren, "res/field_empty.bmp");
-    SDL_Rect efData;
-    SDL_QueryTexture(tex_field_empty, nullptr, nullptr, &efData.w, &efData.h);
-    efData.x = 0;
-    efData.y = 13;
-
     SDL_Texture *tex_field_highlighted = loadTexture(ren, "res/field_highlighted.bmp");
     SDL_Texture *tex_field_x = loadTexture(ren, "res/field_x.bmp");
     SDL_Texture *tex_field_o = loadTexture(ren, "res/field_o.bmp");
@@ -111,19 +108,20 @@ int main()
             //Draw background
             spr_gameBg.draw(ren);
             //Draw fields
+            SDL_Rect rect{0, 13, FIELD_SIZE.x, FIELD_SIZE.y};
             for (int i = 0; i < 9; i++)
             {
-                efData.x += 15;
+                rect.x += 15;
 
                 if (board[i] == 0)
                 {
-                    SDL_RenderCopy(ren, tex_field_empty, nullptr, &efData);
+                    SDL_RenderCopy(ren, tex_field_empty, nullptr, &rect);
                 }
                 if (!ended)
                 {
-                    if (pointIsInRect({event.motion.x, event.motion.y}, efData))
+                    if (pointIsInRect({event.motion.x, event.motion.y}, rect))
                     {
-                        SDL_RenderCopy(ren, tex_field_highlighted, nullptr, &efData);
+                        SDL_RenderCopy(ren, tex_field_highlighted, nullptr, &rect);
                         if (event.button.button == SDL_BUTTON_LEFT)
                         {
                             if (board[i] == 0)
@@ -144,21 +142,21 @@ int main()
                 }
                 if (board[i] == 1)
                 {
-                    SDL_RenderCopy(ren, tex_field_x, nullptr, &efData);
+                    SDL_RenderCopy(ren, tex_field_x, nullptr, &rect);
                 }
                 if (board[i] == 2)
                 {
-                    SDL_RenderCopy(ren, tex_field_o, nullptr, &efData);
+                    SDL_RenderCopy(ren, tex_field_o, nullptr, &rect);
                 }
-                efData.x += efData.w + 3;
+                rect.x += rect.w + 3;
                 if (i == 2 || i == 5)
                 {
-                    efData.y += efData.h + 15;
-                    efData.x = 0;
+                    rect.y += rect.h + 15;
+                    rect.x = 0;
                 }
             }
-            efData.x = 0;
-            efData.y = 13;
+            rect.x = 0;
+            rect.y = 13;
             //Check who won
             if (!ended)
             {
