@@ -5,11 +5,11 @@ using namespace std;
 
 namespace {
 
-void checkError(bool expr)
+void tictac_assert(bool expr, const string& message)
 {
     if(!expr)
     {
-        cout << SDL_GetError() << endl;
+        cerr << message << endl;
         exit(1);
     }
 }
@@ -43,9 +43,9 @@ int main()
 {
     SDL_Surface *img;
     SDL_Window *win = SDL_CreateWindow("TicTacToe - Press R to restart.", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 320, 400, SDL_WINDOW_SHOWN);
-    checkError(win);
+    tictac_assert(win, SDL_GetError());
     SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    checkError(ren);
+    tictac_assert(ren, SDL_GetError());
     const Uint8* keyDown = SDL_GetKeyboardState(nullptr);
     
     int turn = 0;
@@ -54,7 +54,7 @@ int main()
 
     //Menu Background
     img = SDL_LoadBMP("res/Menubg.bmp");
-    checkError(img);
+    tictac_assert(img, SDL_GetError());
     SDL_Rect mbgData;
     mbgData.x = 0;
     mbgData.y = 0;
@@ -65,7 +65,7 @@ int main()
 
     //Play Button
     img = SDL_LoadBMP("res/pb.bmp");
-    checkError(img);
+    tictac_assert(img, SDL_GetError());
     SDL_Rect pbData;
     pbData.x = 75;
     pbData.y = 100;
@@ -76,7 +76,7 @@ int main()
 
     //Selection arrow
     img = SDL_LoadBMP("res/selection.bmp");
-    checkError(img);
+    tictac_assert(img, SDL_GetError());
     SDL_Rect selData;
     selData.x = 65;
     selData.y = 100;
@@ -87,7 +87,7 @@ int main()
 
     //Exit
     img = SDL_LoadBMP("res/eb.bmp");
-    checkError(img);
+    tictac_assert(img, SDL_GetError());
     SDL_Rect ebData;
     ebData.x = 75;
     ebData.y = 200;
@@ -98,7 +98,7 @@ int main()
 
     //Background
     img = SDL_LoadBMP("res/bg.bmp");
-    checkError(img);
+    tictac_assert(img, SDL_GetError());
     SDL_Rect bgData;
     bgData.x = 0;
     bgData.y = 3;
@@ -109,7 +109,7 @@ int main()
 
     //Empty Field
     img = SDL_LoadBMP("res/empty.bmp");
-    checkError(img);
+    tictac_assert(img, SDL_GetError());
     SDL_Rect efData;
     efData.x = 0;
     efData.y = 13;
@@ -120,19 +120,19 @@ int main()
 
     //Mouseover Field
     img = SDL_LoadBMP("res/collision.bmp");
-    checkError(img);
+    tictac_assert(img, SDL_GetError());
     SDL_Texture *moTexture = SDL_CreateTextureFromSurface(ren, img);
     SDL_FreeSurface(img);
 
     //X Field
     img = SDL_LoadBMP("res/x.bmp");
-    checkError(img);
+    tictac_assert(img, SDL_GetError());
     SDL_Texture *xTexture = SDL_CreateTextureFromSurface(ren, img);
     SDL_FreeSurface(img);
 
     //O Field
     img = SDL_LoadBMP("res/o.bmp");
-    checkError(img);
+    tictac_assert(img, SDL_GetError());
     SDL_Texture *oTexture = SDL_CreateTextureFromSurface(ren, img);
     SDL_FreeSurface(img);
 
