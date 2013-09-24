@@ -8,6 +8,7 @@ class State
 public:
     virtual void onEvent(const SDL_Event &/*event*/) {}
     virtual void onUpdate() {}
+    virtual ~State() {}
 };
 
 #endif // STATE_HPP

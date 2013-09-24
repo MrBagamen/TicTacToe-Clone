@@ -61,6 +61,11 @@ void update()
 
 void quit()
 {
+    for (auto pair : m_states)
+    {
+        delete pair.second;
+    }
+
     IMG_Quit();
     SDL_Quit();
 }
