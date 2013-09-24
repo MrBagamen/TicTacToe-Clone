@@ -38,7 +38,7 @@ bool pointIsInRect(SDL_Point p, SDL_Rect r)
 }
 
 // Load a texture assertively
-SDL_Texture* loadTexture(SDL_Renderer* renderer, const string& filename)
+SDL_Texture *loadTexture(SDL_Renderer *renderer, const string &filename)
 {
     auto tex = IMG_LoadTexture(renderer, filename.c_str());
     tictac_assert(tex, IMG_GetError());

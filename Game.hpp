@@ -8,7 +8,7 @@ class Game
 public:
     Game(SDL_Renderer *ren);
     void update();
-    void onEvent(SDL_Event& event);
+    void onEvent(SDL_Event &event);
 private:
     char board[9];
     int turn = 0;

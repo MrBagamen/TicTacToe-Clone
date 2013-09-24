@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Game::Game(SDL_Renderer* ren) :
+Game::Game(SDL_Renderer *ren) :
     m_renderer(ren),
     spr_gameBg(loadTexture(m_renderer, "res/bg_game.bmp")),
     tex_field_empty(loadTexture(m_renderer, "res/field_empty.bmp")),
@@ -29,7 +29,7 @@ void Game::update()
     //Draw background
     spr_gameBg.draw(m_renderer);
     //Draw fields
-    SDL_Rect rect{FIELD_START.x, FIELD_START.y, FIELD_SIZE.x, FIELD_SIZE.y};
+    SDL_Rect rect {FIELD_START.x, FIELD_START.y, FIELD_SIZE.x, FIELD_SIZE.y};
     for (int i = 0; i < 9; i++)
     {
         if (board[i] == 0)
@@ -105,7 +105,7 @@ void Game::onEvent(SDL_Event &event)
 
 int Game::tileIndexFromPoint(SDL_Point p)
 {
-    SDL_Rect rect{FIELD_START.x, FIELD_START.y, FIELD_SIZE.x, FIELD_SIZE.y};
+    SDL_Rect rect {FIELD_START.x, FIELD_START.y, FIELD_SIZE.x, FIELD_SIZE.y};
 
     for (int i = 0; i < 9; ++i)
     {
