@@ -41,7 +41,6 @@ bool mouseOver(int mx, int my, SDL_Rect r)
 
 int main()
 {
-    SDL_Event e;
     SDL_Surface *img;
     SDL_Window *win = SDL_CreateWindow("TicTacToe - Press R to restart.", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 320, 400, SDL_WINDOW_SHOWN);
     checkError(win);
@@ -146,9 +145,10 @@ int main()
     bool is_running = true;
     while(is_running)
     {
-        while(SDL_PollEvent(&e))
+        SDL_Event event;
+        while(SDL_PollEvent(&event))
         {
-            switch(e.type)
+            switch(event.type)
             {
             case SDL_QUIT:
                 is_running = false;
@@ -178,10 +178,10 @@ int main()
                 }
                 if(!ended)
                 {
-                    if(mouseOver(e.motion.x, e.motion.y, efData))
+                    if(mouseOver(event.motion.x, event.motion.y, efData))
                     {
                         SDL_RenderCopy(ren, moTexture, nullptr, &efData);
-                        if(e.button.button == SDL_BUTTON_LEFT)
+                        if(event.button.button == SDL_BUTTON_LEFT)
                         {
                             if(fArray[i] == 0)
                             {
@@ -246,20 +246,20 @@ int main()
             //Exit button
             SDL_RenderCopy(ren, ebTexture, nullptr, &ebData);
 
-            if(mouseOver(e.motion.x, e.motion.y, pbData))
+            if(mouseOver(event.motion.x, event.motion.y, pbData))
             {
                 SDL_RenderCopy(ren, selTexture, nullptr, &selData);
-                if(e.button.button == SDL_BUTTON_LEFT)
+                if(event.button.button == SDL_BUTTON_LEFT)
                 {
                     menu = false;
                 }
             }
-            if(mouseOver(e.motion.x, e.motion.y, ebData))
+            if(mouseOver(event.motion.x, event.motion.y, ebData))
             {
                 selData.y += 100;
                 SDL_RenderCopy(ren, selTexture, nullptr, &selData);
                 selData.y -= 100;
-                if(e.button.button == SDL_BUTTON_LEFT)
+                if(event.button.button == SDL_BUTTON_LEFT)
                 {
                     is_running = false;
                 }
