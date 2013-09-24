@@ -155,8 +155,6 @@ int main()
                     rect.x = 0;
                 }
             }
-            rect.x = 0;
-            rect.y = 13;
             //Check who won
             if (!ended)
             {
