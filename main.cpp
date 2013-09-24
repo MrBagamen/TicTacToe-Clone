@@ -1,3 +1,5 @@
+#include "Sprite.hpp"
+
 #include <iostream>
 #include <SDL2/SDL.h>
 
@@ -56,56 +58,36 @@ int main()
     //Menu Background
     img = SDL_LoadBMP("res/Menubg.bmp");
     tictac_assert(img, SDL_GetError());
-    SDL_Rect mbgData;
-    mbgData.x = 0;
-    mbgData.y = 0;
-    mbgData.w = img->w;
-    mbgData.h = img->h;
     SDL_Texture *mbgTexture = SDL_CreateTextureFromSurface(ren, img);
+    Sprite mbgSprite(mbgTexture);
     SDL_FreeSurface(img);
 
     //Play Button
     img = SDL_LoadBMP("res/pb.bmp");
     tictac_assert(img, SDL_GetError());
-    SDL_Rect pbData;
-    pbData.x = 75;
-    pbData.y = 100;
-    pbData.w = img->w;
-    pbData.h = img->h;
     SDL_Texture *pbTexture = SDL_CreateTextureFromSurface(ren, img);
+    Sprite pbSprite(pbTexture, 75, 100);
     SDL_FreeSurface(img);
 
     //Selection arrow
     img = SDL_LoadBMP("res/selection.bmp");
     tictac_assert(img, SDL_GetError());
-    SDL_Rect selData;
-    selData.x = 65;
-    selData.y = 100;
-    selData.w = img->w;
-    selData.h = img->h;
     SDL_Texture *selTexture = SDL_CreateTextureFromSurface(ren, img);
+    Sprite selSprite(selTexture, 65, 100);
     SDL_FreeSurface(img);
 
     //Exit
     img = SDL_LoadBMP("res/eb.bmp");
     tictac_assert(img, SDL_GetError());
-    SDL_Rect ebData;
-    ebData.x = 75;
-    ebData.y = 200;
-    ebData.w = img->w;
-    ebData.h = img->h;
     SDL_Texture *ebTexture = SDL_CreateTextureFromSurface(ren, img);
+    Sprite ebSprite(ebTexture, 75, 200);
     SDL_FreeSurface(img);
 
     //Background
     img = SDL_LoadBMP("res/bg.bmp");
     tictac_assert(img, SDL_GetError());
-    SDL_Rect bgData;
-    bgData.x = 0;
-    bgData.y = 3;
-    bgData.w = img->w;
-    bgData.h = img->h;
     SDL_Texture *bgTexture = SDL_CreateTextureFromSurface(ren, img);
+    Sprite bgSprite(bgTexture, 0, 3);
     SDL_FreeSurface(img);
 
     //Empty Field
@@ -167,7 +149,7 @@ int main()
                 menu = true;
             }
             //Draw background
-            SDL_RenderCopy(ren, bgTexture, nullptr, &bgData);
+            bgSprite.draw(ren);
             //Draw fields
             for (int i = 0; i < 9; i++)
             {
@@ -238,28 +220,24 @@ int main()
         }
         else
         {
-            //MENU BG
-            SDL_RenderCopy(ren, mbgTexture, nullptr, &mbgData);
+            mbgSprite.draw(ren);
+            pbSprite.draw(ren);
+            ebSprite.draw(ren);
 
-            //Play button
-            SDL_RenderCopy(ren, pbTexture, nullptr, &pbData);
-
-            //Exit button
-            SDL_RenderCopy(ren, ebTexture, nullptr, &ebData);
-
-            if (pointIsInRect({event.motion.x, event.motion.y}, pbData))
+            if (pointIsInRect({event.motion.x, event.motion.y}, pbSprite.getRect()))
             {
-                SDL_RenderCopy(ren, selTexture, nullptr, &selData);
+                selSprite.draw(ren);
                 if (event.button.button == SDL_BUTTON_LEFT)
                 {
                     menu = false;
                 }
             }
-            if (pointIsInRect({event.motion.x, event.motion.y}, ebData))
+            if (pointIsInRect({event.motion.x, event.motion.y}, ebSprite.getRect()))
             {
-                selData.y += 100;
-                SDL_RenderCopy(ren, selTexture, nullptr, &selData);
-                selData.y -= 100;
+                selSprite.move(0, 100);
+                selSprite.draw(ren);
+                selSprite.move(0, -100);
+
                 if (event.button.button == SDL_BUTTON_LEFT)
                 {
                     is_running = false;
