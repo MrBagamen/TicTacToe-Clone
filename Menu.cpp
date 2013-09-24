@@ -3,6 +3,8 @@
 #include "util.hpp"
 #include "driver.hpp"
 
+using namespace util;
+
 Menu::Menu() :
     spr_menuBg(loadTexture("res/bg_menu.bmp")),
     spr_playButton(loadTexture("res/button_play.bmp"), 75, 100),

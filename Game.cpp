@@ -7,6 +7,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace util;
 
 Game::Game() :
     spr_gameBg(loadTexture("res/bg_game.bmp")),
