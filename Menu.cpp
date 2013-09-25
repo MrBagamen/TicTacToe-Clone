@@ -6,14 +6,23 @@
 using namespace util;
 
 Menu::Menu() :
-    spr_menuBg(loadTexture("res/bg_menu.png")),
-    spr_singleplayerButton(loadTexture("res/button_singleplayer.png"), 75, 150),
-    spr_netplayButton(loadTexture("res/button_netplay.png"), 75, 220),
-    spr_exitButton(loadTexture("res/button_exit.png"), 75, 290),
-    spr_shine(loadTexture("res/shine.png")),
+    spr_menuBg(),
+    spr_singleplayerButton(75, 150),
+    spr_netplayButton(75, 220),
+    spr_exitButton(75, 290),
+    spr_shine(),
     m_selectedItem(-1)
 {
-
+    tex_menuBg.loadFromFile("res/bg_menu.png");
+    tex_singlePlayerButton.loadFromFile("res/button_singleplayer.png");
+    tex_netplayButton.loadFromFile("res/button_netplay.png");
+    tex_exitButton.loadFromFile("res/button_exit.png");
+    tex_shine.loadFromFile("res/shine.png");
+    spr_menuBg.setTexture(tex_menuBg);
+    spr_singleplayerButton.setTexture(tex_singlePlayerButton);
+    spr_netplayButton.setTexture(tex_netplayButton);
+    spr_exitButton.setTexture(tex_exitButton);
+    spr_shine.setTexture(tex_shine);
 }
 
 void Menu::onUpdate()

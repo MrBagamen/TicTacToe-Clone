@@ -3,16 +3,19 @@
 
 #include <SDL2/SDL.h>
 
+#include "Texture.hpp"
+
 class Sprite
 {
 public:
-    Sprite(SDL_Texture *texture, int x = 0, int y = 0);
+    Sprite(int x = 0, int y = 0);
     void draw() const;
     void move(int xOff, int yOff);
     SDL_Rect getRect() const;
     void setPosition(int x, int y);
+    void setTexture(const Texture &texture);
 private:
-    SDL_Texture *m_texture;
+    const Texture *m_texture;
     SDL_Rect m_rect;
 };
 

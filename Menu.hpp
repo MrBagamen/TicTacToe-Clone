@@ -3,6 +3,7 @@
 
 #include "Sprite.hpp"
 #include "State.hpp"
+#include "Texture.hpp"
 
 class Menu : public State
 {
@@ -16,6 +17,13 @@ private:
     Sprite spr_netplayButton;
     Sprite spr_exitButton;
     Sprite spr_shine;
+
+    Texture tex_menuBg;
+    Texture tex_singlePlayerButton;
+    Texture tex_netplayButton;
+    Texture tex_exitButton;
+    Texture tex_shine;
+
     int m_selectedItem;
 };
 
