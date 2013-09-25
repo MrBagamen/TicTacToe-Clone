@@ -12,9 +12,10 @@ public:
     virtual void onEvent(const SDL_Event &event);
 private:
     Sprite spr_menuBg;
-    Sprite spr_playButton;
-    Sprite spr_shine;
+    Sprite spr_singleplayerButton;
+    Sprite spr_netplayButton;
     Sprite spr_exitButton;
+    Sprite spr_shine;
     int m_selectedItem;
 };
 
