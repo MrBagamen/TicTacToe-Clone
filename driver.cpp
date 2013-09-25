@@ -15,10 +15,11 @@ bool running;
 
 std::map<std::string, State *> m_states;
 State *m_state;
+SDL_Window *win;
 
 void init()
 {
-    SDL_Window *win = SDL_CreateWindow("TicTacToe - Press R to restart.", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 320, 400, SDL_WINDOW_SHOWN);
+    win = SDL_CreateWindow("TicTacToe", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 320, 400, SDL_WINDOW_SHOWN);
     tictac_assert(win, SDL_GetError());
     renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     tictac_assert(renderer, SDL_GetError());
@@ -70,6 +71,8 @@ void quit()
 
     SDLNet_Quit();
     IMG_Quit();
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(win);
     SDL_Quit();
 }
 
