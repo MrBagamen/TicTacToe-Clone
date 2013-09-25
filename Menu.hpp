@@ -13,7 +13,7 @@ public:
 private:
     Sprite spr_menuBg;
     Sprite spr_playButton;
-    Sprite spr_selectionArrow;
+    Sprite spr_shine;
     Sprite spr_exitButton;
     int m_selectedItem;
 };

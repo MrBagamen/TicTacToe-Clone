@@ -8,7 +8,7 @@ using namespace util;
 Menu::Menu() :
     spr_menuBg(loadTexture("res/bg_menu.bmp")),
     spr_playButton(loadTexture("res/button_play.bmp"), 75, 100),
-    spr_selectionArrow(loadTexture("res/selectionarrow.bmp"), 65, 100),
+    spr_shine(loadTexture("res/shine.png"), 65, 100),
     spr_exitButton(loadTexture("res/button_exit.bmp"), 75, 200),
     m_selectedItem(0)
 {
@@ -23,18 +23,18 @@ void Menu::onUpdate()
 
     if (m_selectedItem == 0)
     {
-        spr_selectionArrow.setPosition(65, 100);
+        spr_shine.setPosition(75, 100);
     }
     else if (m_selectedItem == 1)
     {
-        spr_selectionArrow.setPosition(65, 200);
+        spr_shine.setPosition(75, 200);
     }
     else
     {
         return;
     }
 
-    spr_selectionArrow.draw();
+    spr_shine.draw();
 }
 
 void Menu::onEvent(const SDL_Event &event)
