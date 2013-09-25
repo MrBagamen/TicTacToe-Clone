@@ -23,12 +23,4 @@ bool pointIsInRect(SDL_Point p, SDL_Rect r)
     return p.x > r.x && p.x < r.x + r.w && p.y > r.y && p.y < r.y + r.h;
 }
 
-// Load a texture assertively
-SDL_Texture *loadTexture(const string &filename)
-{
-    auto tex = IMG_LoadTexture(driver::renderer, filename.c_str());
-    tictac_assert(tex, IMG_GetError());
-    return tex;
-}
-
 }
