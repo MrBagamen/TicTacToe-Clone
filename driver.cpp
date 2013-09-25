@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_net.h>
 
 using namespace util;
 
@@ -23,6 +24,7 @@ void init()
     tictac_assert(renderer, SDL_GetError());
 
     tictac_assert(IMG_Init(IMG_INIT_PNG) == IMG_INIT_PNG, IMG_GetError());
+    tictac_assert(SDLNet_Init() == 0, SDLNet_GetError());
     running = true;
 }
 
@@ -66,6 +68,7 @@ void quit()
         delete pair.second;
     }
 
+    SDLNet_Quit();
     IMG_Quit();
     SDL_Quit();
 }
