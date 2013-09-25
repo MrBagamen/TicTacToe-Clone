@@ -9,15 +9,16 @@
 using namespace std;
 using namespace util;
 
-Game::Game() :
-    spr_gameBg(loadTexture("res/bg_game.bmp")),
-    tex_field_empty(loadTexture("res/field_empty.bmp")),
-    tex_field_highlighted(loadTexture("res/field_highlighted.bmp")),
-    tex_field_x(loadTexture("res/field_x.bmp")),
-    tex_field_o(loadTexture("res/field_o.bmp"))
+Game::Game()
 {
+    tex_gameBg.loadFromFile("res/bg_game.bmp");
+    tex_field_empty.loadFromFile("res/field_empty.bmp");
+    tex_field_highlighted.loadFromFile("res/field_highlighted.bmp");
+    tex_field_x.loadFromFile("res/field_x.bmp");
+    tex_field_o.loadFromFile("res/field_o.bmp");
     memset(board, 0, 9);
     m_highlightedTile = -1;
+    spr_gameBg.setTexture(tex_gameBg);
 }
 
 void Game::onUpdate()

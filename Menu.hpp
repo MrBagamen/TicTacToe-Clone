@@ -3,6 +3,7 @@
 
 #include "Sprite.hpp"
 #include "State.hpp"
+#include "Texture.hpp"
 
 class Menu : public State
 {
@@ -12,9 +13,17 @@ public:
     virtual void onEvent(const SDL_Event &event);
 private:
     Sprite spr_menuBg;
-    Sprite spr_playButton;
-    Sprite spr_selectionArrow;
+    Sprite spr_singleplayerButton;
+    Sprite spr_netplayButton;
     Sprite spr_exitButton;
+    Sprite spr_shine;
+
+    Texture tex_menuBg;
+    Texture tex_singlePlayerButton;
+    Texture tex_netplayButton;
+    Texture tex_exitButton;
+    Texture tex_shine;
+
     int m_selectedItem;
 };
 

@@ -3,6 +3,7 @@
 
 #include "Sprite.hpp"
 #include "State.hpp"
+#include "Texture.hpp"
 
 class Game : public State
 {
@@ -17,10 +18,11 @@ private:
 
     Sprite spr_gameBg;
 
-    SDL_Texture *tex_field_empty;
-    SDL_Texture *tex_field_highlighted;
-    SDL_Texture *tex_field_x;
-    SDL_Texture *tex_field_o;
+    Texture tex_gameBg;
+    Texture tex_field_empty;
+    Texture tex_field_highlighted;
+    Texture tex_field_x;
+    Texture tex_field_o;
 
     static constexpr SDL_Point FIELD_SIZE  = {85, 85};
     static constexpr SDL_Point FIELD_START = {15, 10};
